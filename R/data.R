@@ -13,11 +13,16 @@
 #'   \item{EDUC}{Participant years of education}
 #'   \item{FDG}{Meta-ROI of FDG-PET values from AD ROI}
 #'   \item{AV45}{Mean of global amyloid-PET}
-#'   \item{Mem1:6}{Memory performances}
+#'   \item{Mem1}{Memory performance #1}
+#'   \item{Mem2}{Memory performance #2}
+#'   \item{Mem3}{Memory performance #3}
+#'   \item{Mem4}{Memory performance #4}
+#'   \item{Mem5}{Memory performance #5}
+#'   \item{Mem6}{Memory performance #6}
 #'   \item{SelfMemComp}{Memory Complaint Participant's Score}
 #'   \item{SelfComp}{Participant's Complaint Score}
 #'   \item{ExtMemComp}{Memory Complaint Relative's Score}
 #'   \item{ExtComp}{Relative's Complaint Score}
 #'   ...
 #' }
-"testdf"
+"df.mmr"
