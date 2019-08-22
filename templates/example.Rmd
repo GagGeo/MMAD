@@ -12,7 +12,7 @@ knitr::opts_chunk$set(echo = TRUE)
 ```{r pgks}
 library(modelr)
 library(tidyverse)
-# library(mmr)
+library(mmr)
 
 theme_set(theme_bw())
 ```
@@ -58,18 +58,25 @@ df.mmr %>% select(complaint, memory) %>%
 
 ```{r def_dist}
 linear <- c("EcogPtMem", "RAVLT.immediate", "RAVLT.forgetting", "RAVLT.perc.forgetting", "ADASQ4")
-# logistic <- c() # If logistic use
 binomial <- tibble(tests = c("RAVLT.learning", "LDELTOTAL"), # Measures that will be considered as binomial
                    max = c(75, 25)) # Max scores of above measures (in the same order)
 ```
 
 
 ```{r mmr_build}
-df.mmr <- mmr.build(mem = memory, comp = complaint, vect.linear = linear, vect.binomial = binomial, df = df.mmr)
+df.mmr <- mmr_build(mem = memory,
+                    comp = complaint,
+                    vect.linear = linear,
+                    vect.binomial = binomial,
+                    df = df.mmr)
 ```
 
 ```{r mmr_min}
 df.mmr %>% select(demographics, markers, Memory, Complaint, MMR, ACDC)
 ```
 
+```{r mmr_save}
+# df.mmr %>% select(demographics, markers, Memory, Complaint, MMR, ACDC) %>%
+#   write.csv2(x = ., file = "path.csv")
+```
 

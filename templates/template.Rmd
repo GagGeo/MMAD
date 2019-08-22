@@ -11,9 +11,11 @@ knitr::opts_chunk$set(echo = TRUE)
 ```
 
 ```{r pgks}
-library(dplyr)
-library(ggplot2)
+library(modelr)
+library(tidyverse)
 library(mmr)
+
+theme_set(theme_bw())
 ```
 
 ```{r import}
@@ -38,7 +40,8 @@ df.mmr <- df.mmr %>%
 ## Vectors
 
 ```{r vectors}
-demographics <- c("Gender", "Education", "Age")
+demographics <- c("ID", "Gender", "Education", "Age")
+markers <- c()
 complaint <- c()
 memory <- c()
 ```
@@ -54,9 +57,19 @@ df.mmr %>% select(complaint, memory) %>%
 
 ```{r def_dist}
 linear <- c()
-logistic <- c()
 binomial <- tibble(tests = c(), # Measures that will be considered as binomial
                    max = c()) # Max scores of above measures (in the same order)
 ```
 
+```{r mmr_build}
+df.mmr <- mmr_build(mem = memory,
+                    comp = complaint,
+                    vect.linear = linear,
+                    vect.binomial = binomial,
+                    df = df.mmr)
+```
 
+```{r mmr_save}
+# df.mmr %>% select(demographics, markers, Memory, Complaint, MMR, ACDC) %>%
+#   write.csv2(x = ., file = "path.csv")
+```
