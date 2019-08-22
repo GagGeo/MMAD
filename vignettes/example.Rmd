@@ -1,0 +1,108 @@
+---
+title: "MMR Example"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{example}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup}
+library(mmr)
+library(dplyr)
+library(ggplot2)
+
+theme_set(theme_bw())
+```
+
+# Introduction
+
+The `mmr` package contains a `data.frame` example 
+
+```{r load_data}
+load("../data/testdf.RData")
+```
+
+```{r head}
+head(df.mmr)
+```
+
+```{r}
+str(df.mmr)
+```
+
+Detail of data:
+
+  * *IDNUM*: Participant Identification Number
+  * *COHORT*: Cohort Name (here "Example")
+  * *VISIT*: Visit ID (e.g. Baseline, M6, M12, etc.)
+  * *AGE*: Age in years
+  * *SEX*: Participant Gender
+  * *EDUC*: Participant years of education
+  * *FDG*: Meta-ROI of FDG-PET values from AD ROI
+  * *AV45*: Mean of global amyloid-PET
+  * *Mem1:6*: Memory performances
+  * *SelfMemComp*: Memory Complaint Participant's Score
+  * *SelfComp*: Participant's Complaint Score
+  * *ExtMemComp*: Memory Complaint Relative's Score
+  * *ExtComp*: Relative's Complaint Score
+
+
+# Tidy Data
+
+## Demographics
+
+```{r rename_demogs}
+df.mmr <- df.mmr %>%
+  dplyr::rename(ID = IDNUM, 
+         Gender = SEX,
+         Education = EDUC, 
+         Age = AGE)
+```
+
+## Vectors
+
+```{r vectors}
+demographics <- c("ID", "Gender", "Education", "Age")
+markers <- c("AV45", "FDG")
+complaint <- c("SelfMemComp")
+memory <- c("Mem1", "Mem2", "Mem3", "Mem4", "Mem5", "Mem6")
+```
+
+## Distribution
+
+```{r check_dist}
+df.mmr %>% dplyr::select(complaint, memory) %>%
+  tidyr::gather(key = "Measure", value = "Score", c(complaint, memory)) %>%
+  ggplot(aes(x = Score)) + geom_histogram(binwidth = 0.1) +
+  facet_wrap(~ Measure, scales = 'free')
+```
+
+In our example, the `Mem4` variable was quoted on 75, and the `Mem6` on 25.
+
+```{r def_dist}
+linear <- c("SelfMemComp", "Mem1", "Mem2", "Mem3", "Mem5")
+binomial <- tibble::tibble(tests = c("Mem4", "Mem6"), # Measures that will be considered as binomial
+                   max = c(75, 25)) # Max scores of above measures (in the same order)
+```
+
+
+```{r mmr_build}
+df.mmr <- mmr_build(mem = memory,
+                    comp = complaint,
+                    vect.linear = linear,
+                    vect.binomial = binomial,
+                    df = df.mmr)
+```
+
+```{r mmr_min}
+df.mmr %>% dplyr::select(demographics, markers, Memory, Complaint, MMR, ACDC)
+```
+
