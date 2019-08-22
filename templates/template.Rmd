@@ -1,0 +1,62 @@
+---
+title: "MMR Construction"
+subtitle: "Guided construction template"
+author: "Geoffroy Gagliardi"
+date: "08/2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r pgks}
+library(dplyr)
+library(ggplot2)
+library(mmr)
+```
+
+```{r import}
+df.mmr <- read.csv("path", sep=";")
+```
+
+# Before Use
+
+# Wrangle
+
+## Demographics
+
+```{r rename_demogs}
+df.mmr <- df.mmr %>%
+  rename(ID = , # Participant ID,
+         Gender = , # Gender Variable Name,
+         Education = , # Education Variable Name, 
+         Age = # Age Variable Name
+           )
+```
+
+## Vectors
+
+```{r vectors}
+demographics <- c("Gender", "Education", "Age")
+complaint <- c()
+memory <- c()
+```
+
+## Distribution
+
+```{r check_dist}
+df.mmr %>% select(complaint, memory) %>%
+  gather(key = "Measure", value = "Score", contains("ROI")) %>%
+  ggplot(aes(x = Score)) + geom_histogram(binwidth = 0.1) +
+  facet_wrap(~ Measure, scales = 'free')
+```
+
+```{r def_dist}
+linear <- c()
+logistic <- c()
+binomial <- tibble(tests = c(), # Measures that will be considered as binomial
+                   max = c()) # Max scores of above measures (in the same order)
+```
+
+

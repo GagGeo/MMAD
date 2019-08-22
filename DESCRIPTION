@@ -1,0 +1,13 @@
+Package: MMR
+Title: This package allows to compute the Meta-Memory Ratio
+Version: 0.0.0.9000
+Authors@R: 
+    person(given = "Geoffroy",
+           family = "Gagliardi",
+           role = c("aut", "cre"),
+           email = "geoffroy.gagliardi@protonmail.com",
+           comment = c(ORCID = "0000-0002-2608-8456"))
+Description: The Meta-Memory Ratio is an awareness measure designed to be used in multiple preclincal AD samples.
+License: MIT Licence
+Encoding: UTF-8
+LazyData: true
