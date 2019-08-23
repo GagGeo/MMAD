@@ -18,10 +18,23 @@ mmr_build(mem, comp, vect.linear, vect.binomial, df)
 \item{df}{data.frame}
 }
 \value{
-data.frame
+data.frame. The return of the function corresponds to the previous
+    data.frame (i.e. the one in the 'df' parameter) with the new computed values.
 }
 \description{
 Performs a regression on defined memory and complaint variables, and
 standardized the residuals. After building composite memory and complaint
 scores, the function compute both the MMR and the ACDC on this basis.
+}
+\details{
+This function is based on two other mmr functions: mmr_regbin and mmr_reglin
+}
+\examples{
+
+
+}
+\seealso{
+\code{\link{mmr_reglin}} for normally distributed variables
+
+\code{\link{mmr_regbin}} for variables with binomial distribution
 }
