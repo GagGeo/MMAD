@@ -4,6 +4,7 @@
 #' standardized the residuals. After building composite memory and complaint
 #' scores, the function compute both the MMR and the ACDC on this basis.
 #'
+#' This function is based on two other mmr functions: mmr_regbin and mmr_reglin
 #'
 #' @param mem character vector (memory variables)
 #' @param comp character vector (complaint variables)
@@ -11,10 +12,16 @@
 #' @param vect.binomial character vector (variables with binomial distribution)
 #' @param df data.frame
 #'
-#' @return data.frame
+#' @return data.frame. The return of the function corresponds to the previous
+#'     data.frame (i.e. the one in the 'df' parameter) with the new computed values.
 #' @export
 #'
+#' @seealso \code{\link{mmr_reglin}} for normally distributed variables
+#' @seealso \code{\link{mmr_regbin}} for variables with binomial distribution
+#'
 #' @examples
+#'
+#'
 mmr_build <- function(mem, comp, vect.linear, vect.binomial, df){
   reglin <- mmr_reglin(vect.linear, df)
   regbin <- mmr_regbin(vect.binomial, df)

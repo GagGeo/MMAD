@@ -24,10 +24,25 @@ theme_set(theme_bw())
 
 # Introduction
 
+The `mmr` package is designed to be used in preclinical AD cohorts. It allows to compute two different measure of awareness: the *Meta-Memory Ratio* (MMR), and the *Awareness of Cognitive Decline Categorization* (ACDC). Both of these scores are based on the Participant-Performance Discrepancy, i.e. the difference between a participant's subjective appraisal of her/his cognition, and her/his objective performance.
+
+The MMR is numeric continuous measure, centered around 0 which corresponds to a good match between subjective and objective performance. A positive score indicates a SCD, and a negative stands for a lack of awareness.
+
+The ACDC, based on the same inputs, categorized the participant as:
+
+  * *Normal*: Good objective and subjective performances.
+  * *Amnestic*: Low objective and subjective performances.
+  * *SCD*: Low subjective but normal objective performance.
+  * *LowAwareness*: normal subjective but low subjective performance.
+  
+Both of the measures are designed to be used in multiple preclincal AD samples. Here's a minimal example to show how to use the functions.
+
+# Example
+
 The `mmr` package contains a `data.frame` example 
 
 ```{r load_data}
-load("../data/testdf.RData")
+data("testdf")
 ```
 
 ```{r head}
@@ -55,19 +70,31 @@ Detail of data:
   * *ExtComp*: Relative's Complaint Score
 
 
-# Tidy Data
+## Wrangle
 
-## Demographics
+The only prerequisite of the `mmr` functions to work is that the `data.frame` must follow some standards:
+  
+  1. Tidy Data: the dataset must be tidy with 1 row for every observations, and 1 column for every variable.
+  1. Demographics: the demographics variables must be named as presented below.
+
+
+### Demographics
+
+First, we have to change the demographic variables names to fit the `mmr` package standard.
 
 ```{r rename_demogs}
 df.mmr <- df.mmr %>%
-  dplyr::rename(ID = IDNUM, 
-         Gender = SEX,
-         Education = EDUC, 
-         Age = AGE)
+  dplyr::rename(ID = IDNUM, # Participant ID,
+                Gender = SEX, # Gender Variable Name,
+                Education = EDUC, # Education Variable Name, 
+                Age = AGE, # Age Variable Name
+                Cohort = COHORT # Cohort Name (here "Example")
+                ) 
 ```
 
-## Vectors
+### Vectors
+
+Secondly, we have to define some vectors that will be usefull for the analysis.
 
 ```{r vectors}
 demographics <- c("ID", "Gender", "Education", "Age")
@@ -76,7 +103,9 @@ complaint <- c("SelfMemComp")
 memory <- c("Mem1", "Mem2", "Mem3", "Mem4", "Mem5", "Mem6")
 ```
 
-## Distribution
+### Distribution
+
+The third step is to check the distribution of the scores. Then, we will have to decide wether we will treat the variables with linear or binomial regressions.
 
 ```{r check_dist}
 df.mmr %>% dplyr::select(complaint, memory) %>%
@@ -85,7 +114,9 @@ df.mmr %>% dplyr::select(complaint, memory) %>%
   facet_wrap(~ Measure, scales = 'free')
 ```
 
-In our example, the `Mem4` variable was quoted on 75, and the `Mem6` on 25.
+For the example, we will treat the `Mem4`and `Mem6` variables *via* binomial regressions. In our example, the `Mem4` variable was quoted on 75, and the `Mem6` on 25. All other variables will be treated with linear regressions.
+
+In order to make thing as simple as possible, we will save this information in R objects.
 
 ```{r def_dist}
 linear <- c("SelfMemComp", "Mem1", "Mem2", "Mem3", "Mem5")
@@ -93,6 +124,9 @@ binomial <- tibble::tibble(tests = c("Mem4", "Mem6"), # Measures that will be co
                    max = c(75, 25)) # Max scores of above measures (in the same order)
 ```
 
+Now we have all we need to build the awareness scores for our sample.
+
+## The `mmr_build` function
 
 ```{r mmr_build}
 df.mmr <- mmr_build(mem = memory,
@@ -102,7 +136,8 @@ df.mmr <- mmr_build(mem = memory,
                     df = df.mmr)
 ```
 
-```{r mmr_min}
-df.mmr %>% dplyr::select(demographics, markers, Memory, Complaint, MMR, ACDC)
-```
+And that's it! As you can see below, we have our awareness measures. The below table represent a minimal information table sufficient to export if you want to add other cohorts or share data with others.
 
+```{r mmr_min}
+df.mmr %>% dplyr::select(demographics, Cohort, markers, Memory, Complaint, MMR, ACDC)
+```
