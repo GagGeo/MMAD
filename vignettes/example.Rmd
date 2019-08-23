@@ -139,5 +139,5 @@ df.mmr <- mmr_build(mem = memory,
 And that's it! As you can see below, we have our awareness measures. The below table represent a minimal information table sufficient to export if you want to add other cohorts or share data with others.
 
 ```{r mmr_min}
-df.mmr %>% dplyr::select(demographics, Cohort, markers, Memory, Complaint, MMR, ACDC)
+df.mmr %>% dplyr::select(demographics, Cohort, markers, Memory, Complaint, MMR, ACDC) %>% head()
 ```
