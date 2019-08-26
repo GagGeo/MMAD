@@ -51,7 +51,7 @@ mmr_regbin <- function(vect.binomial, df){
     dplyr::rename_at(.vars = unlist(vect.binomial[,1]), .funs = function(x){
       paste(x, ".res", sep = "")})
 
-  df.temp <- df.mmr %>% dplyr::right_join(x = ., y = df.temp, by = "ID")
+  df.temp <- df %>% dplyr::right_join(x = ., y = df.temp, by = "ID")
 
   return(df.temp)
 }

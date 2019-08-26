@@ -24,7 +24,9 @@ theme_set(theme_bw())
 
 # Introduction
 
-The `mmr` package is designed to be used in preclinical AD cohorts. It allows to compute two different measure of awareness: the *Meta-Memory Ratio* (MMR), and the *Awareness of Cognitive Decline Categorization* (ACDC). Both of these scores are based on the Participant-Performance Discrepancy, i.e. the difference between a participant's subjective appraisal of her/his cognition, and her/his objective performance.
+The `mmr` package is designed to be used in preclinical AD cohorts. It allows to compute three different measure of awareness: the *Meta-Memory Ratio* (MMR), the *Awareness of Cognitive Decline Categorization* (ACDC) and the Awareness for Cognitive Decline Index (ACDI).
+
+The MMR and the ACDC are based on the Participant-Performance Discrepancy, i.e. the difference between a participant's subjective appraisal of her/his cognition, and her/his objective performance.
 
 The MMR is numeric continuous measure, centered around 0 which corresponds to a good match between subjective and objective performance. A positive score indicates a SCD, and a negative stands for a lack of awareness.
 
@@ -35,9 +37,11 @@ The ACDC, based on the same inputs, categorized the participant as:
   * *SCD*: Low subjective but normal objective performance.
   * *LowAwareness*: normal subjective but low subjective performance.
   
-Both of the measures are designed to be used in multiple preclincal AD samples. Here's a minimal example to show how to use the functions.
+The ACDI is based on the Participant-Informant Discrepancy. As for the MMR, it's a numeric continuous measure, centered around 0 which corresponds to a good match between subjective and objective performance. A positive score indicates a SCD, and a negative stands for a lack of awareness.
 
-# Example
+All of the measures are designed to be used in multiple preclincal AD samples, either for one or multiples visits.
+
+# Example: Unique Visit
 
 The `mmr` package contains a `data.frame` example 
 
@@ -88,7 +92,8 @@ df.mmr <- df.mmr %>%
                 Gender = SEX, # Gender Variable Name,
                 Education = EDUC, # Education Variable Name, 
                 Age = AGE, # Age Variable Name
-                Cohort = COHORT # Cohort Name (here "Example")
+                Cohort = COHORT, # Cohort Name (here "Example"),
+                Visit = VISIT # Visit ID (e.g. M0, M12, etc.)
                 ) 
 ```
 
@@ -139,5 +144,62 @@ df.mmr <- mmr_build(mem = memory,
 And that's it! As you can see below, we have our awareness measures. The below table represent a minimal information table sufficient to export if you want to add other cohorts or share data with others.
 
 ```{r mmr_min}
-df.mmr %>% dplyr::select(demographics, Cohort, markers, Memory, Complaint, MMR, ACDC) %>% head()
+df.mmr %>% dplyr::select(demographics, Visit, Cohort, markers, Memory, Complaint, MMR, ACDC) %>% head()
 ```
+
+```{r mmr_dist}
+df.mmr %>% ggplot(aes(x = MMR)) + geom_density()
+df.mmr  %>% 
+  ggplot(aes(x = Memory, y = Complaint)) + 
+  
+  geom_point(size = 3, alpha = 0.5) +
+  labs(title = "ACDC Description") +
+  
+  geom_hline(yintercept = 0, linetype = "dashed") +
+  geom_vline(xintercept = 0, linetype = "dashed") +
+  
+  annotate("rect", xmin = -3, xmax = 0, ymin = 0, ymax = 3,
+        alpha = .1, fill = "red") +
+  annotate(geom="text", x=-2, y=2, label="Amnesia",
+              color="black", angle = 45, size = 3) +
+  
+  annotate("rect", xmin = 0, xmax = 3, ymin = 0, ymax = 3,
+        alpha = .1, fill = "blue") +
+  annotate(geom="text", x=2, y=2, label="SCD",
+              color="black", angle = 45, size = 3) +
+  
+  annotate("rect", xmin = -3, xmax = 0, ymin = -3, ymax = 0,
+        alpha = .1, fill = "violet") +
+  annotate(geom="text", x=-2, y=-2, label="Anosognosia ",
+              color="black", angle = 45, size = 3) + 
+  
+  annotate("rect", xmin = 0, xmax = 3, ymin = -3, ymax = 0,
+        alpha = .1, fill = "green") +
+  annotate(geom="text", x=2, y=-2, label="Normal",
+              color="black", angle = 45, size = 3)
+```
+
+For longitudinal observations, please use the function `mmr_longit` which takes as additional entry the "visit" variable name. In this way, the MMR and ACDC computations are made intra-visits.
+
+e.g. `mmr_longit(vis = "Visit", mem = memory, comp = complaint, vect.linear = linear, vect.binomial = binomial, df = df.mmr)`
+
+## The `mmr_acdi` function
+
+```{r acdi}
+df.mmr <- mmr_acdi(self = "SelfMemComp",
+                   ext = "ExtMemComp",
+                   df = df.mmr,
+                   lim = 1.5)
+```
+
+```{r acdi_tab}
+df.mmr %>% dplyr::select(demographics, Visit, Cohort, markers, ACDI, ACDI_gp) %>% head()
+```
+
+```{r acdi_dist}
+df.mmr %>% ggplot(aes(x = ACDI, fill = ACDI_gp)) + geom_histogram()
+```
+
+As well as for the MMR and ACDC, the function `mmr_adcilong` stands for longitudinal computations, with the "visit" variable name in addition.
+
+e.g. `mmr_acdilong(self = "SelfMemComp", ext = "ExtMemComp", vis = "Visit", df = df.mmr, lim = 1.5)`
