@@ -1,5 +1,5 @@
 ---
-title: "MMR Example"
+title: "mmad Example"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{example}
@@ -15,7 +15,7 @@ knitr::opts_chunk$set(
 ```
 
 ```{r setup}
-library(mmr)
+library(mmad)
 library(dplyr)
 library(ggplot2)
 
@@ -24,7 +24,7 @@ theme_set(theme_bw())
 
 # Introduction
 
-The `mmr` package is designed to be used in preclinical AD cohorts. It allows to compute three different measure of awareness: the *Meta-Memory Ratio* (MMR), the *Awareness of Cognitive Decline Categorization* (ACDC) and the Awareness for Cognitive Decline Index (ACDI).
+The `mmad` package is designed to be used in preclinical AD cohorts. It allows to compute three different measure of awareness: the *Meta-Memory Ratio* (MMR), the *Awareness of Cognitive Decline Categorization* (ACDC) and the Awareness for Cognitive Decline Index (ACDI).
 
 The MMR and the ACDC are based on the Participant-Performance Discrepancy, i.e. the difference between a participant's subjective appraisal of her/his cognition, and her/his objective performance.
 

@@ -1,6 +1,6 @@
-#' mmr: A package for computating awareness measures for preclinical AD cohorts
+#' mmad: A package for computating awareness measures for preclinical AD cohorts
 #'
-#' The mmr package provides a function that allows to compute three measures of
+#' The mmad package provides a function that allows to compute three measures of
 #' awareness: the Meta-Memory Ratio (MMR), the Awareness of Cognitive
 #' Decline Categorization (ACDC), and the Awareness of Cognitive Decline Index
 #' (ACDI). All of the measures can be computed either for a unique visit or

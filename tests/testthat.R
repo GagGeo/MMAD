@@ -1,4 +1,4 @@
 library(testthat)
-library(mmr)
+library(mmad)
 
-test_check("mmr")
+test_check("mmad")
