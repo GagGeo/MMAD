@@ -1,6 +1,6 @@
-# Meta-Memory in Alzheimer's Disease: The MMAD Package
+# The Meta-Memory in Alzheimer's Disease (MMAD) Package
 
-The `mmad` (*Meta-Memory in Alzheimer's Disease*) package is designed to be used in preclinical AD cohorts. It allows to compute three different measure of awareness: the *Meta-Memory Ratio* (MMR), the *Awareness of Cognitive Decline Categorization* (ACDC) and the *Awareness for Cognitive Decline Index* (ACDI).
+The `mmad` package is designed to be used in preclinical AD cohorts. It allows to compute three different measure of awareness: the *Meta-Memory Ratio* (MMR), the *Awareness of Cognitive Decline Categorization* (ACDC) and the *Awareness for Cognitive Decline Index* (ACDI).
 
 The MMR and the ACDC are based on the Participant-Performance Discrepancy, i.e. the difference between a participant's subjective appraisal of her/his cognition, and her/his objective performance.
 
