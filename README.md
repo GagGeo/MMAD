@@ -15,4 +15,4 @@ The ACDC, based on the same inputs, categorized the participant as:
   
 The ACDI is based on the Participant-Informant Discrepancy. As for the MMR, it's a numeric continuous measure, centered around 0 which corresponds to a good match between subjective and objective performance. A positive score indicates a SCD, and a negative stands for a lack of awareness.
 
-All of the measures are designed to be used in multiple preclincal AD samples, either for one or multiples visits. 
+All of the measures are designed to be used in multiple preclincal AD samples, either for one or multiples visits.
