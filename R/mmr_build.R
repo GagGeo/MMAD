@@ -56,7 +56,7 @@ mmr_build <- function(mem, comp, vect.linear, vect.binomial, df, bl = NA){
     dfs_vis <- df %>% dplyr::group_split(Visit)
 
     output <- map(.x = dfs_vis, .f = function(x){
-      output <- first_step(vect.linear, vect.binomial, df)
+      output <- first_step(vect.linear, vect.binomial, x)
       z_scores <- map(.x = colnames(output)[str_detect(string = colnames(output),
                                                        pattern = ".res")],
                       .f = function(x){
