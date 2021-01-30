@@ -3,7 +3,6 @@
 \docType{package}
 \name{mmr}
 \alias{mmr}
-\alias{mmr-package}
 \title{mmad: A package for computating awareness measures for preclinical AD cohorts}
 \description{
 The mmad package provides a function that allows to compute three measures of

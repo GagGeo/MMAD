@@ -36,16 +36,17 @@ mmr_regbin <- function(vect.binomial, df){
   models <- purrr::map2(df.temp$Test, df.temp$data, function(x, y){
     regtest(mesure = x[[1]], vect = vect.binomial, df = y)})
 
+  df.temp$mods <- models
+
   df.temp <- df.temp %>%
-    mutate(mods = models,
-           resids = purrr::map2(data, mods, modelr::add_residuals))
+    mutate(resids = purrr::map2(data, mods, modelr::add_residuals))
 
   df.temp <- df.temp %>% dplyr::mutate(resids = purrr::map(resids, function(x){
     x %>% dplyr::mutate(resid = as.list(x[, 'resid'])$resid[,1])
   }))
 
   df.temp <- df.temp %>% tidyr::unnest(resids) %>%
-    dplyr::select(-Score) %>% tidyr::spread(key = Test, value = resid)
+    dplyr::select(-c(Score, data, mods)) %>% tidyr::spread(key = Test, value = resid)
 
   df.temp <- df.temp %>% dplyr::select(ID, as.list(vect.binomial[,1])$test) %>%
     dplyr::rename_at(.vars = unlist(vect.binomial[,1]), .funs = function(x){

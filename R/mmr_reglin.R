@@ -23,10 +23,11 @@ mmr_reglin <- function(vect.linear, df) {
 
   models <- purrr::map(df.temp$data, regtest)
 
+  df.temp$mods <- models
+
   df.temp <-  df.temp %>%
-    dplyr::mutate(mods = models,
-           resids = purrr::map2(data, mods, modelr::add_residuals)) %>%
-    tidyr::unnest(resids) %>% dplyr::select(-Score) %>%
+    dplyr::mutate(resids = purrr::map2(data, mods, modelr::add_residuals)) %>%
+    tidyr::unnest(resids) %>% dplyr::select(-c(Score, data, mods)) %>%
     tidyr::spread(key = Test, value = resid)
 
   df.temp <- df.temp %>% dplyr::select(ID, vect.linear) %>%

@@ -25,10 +25,10 @@ mmr_longit <- function(vis, mem, comp, vect.linear, vect.binomial, df) {
   df.split <- split(x = df, f = df[, vis])
 
   mmr <- purrr::map(.x = df.split, .f = function(x){
-    mmr_build(mem = memory,
-              comp = complaint,
-              vect.linear = linear,
-              vect.binomial = binomial,
+    mmr_build(mem = mem,
+              comp = comp,
+              vect.linear = vect.linear,
+              vect.binomial = vect.binomial,
               df = x)
   })
 

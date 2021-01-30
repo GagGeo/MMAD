@@ -4,7 +4,8 @@
 \name{df.mmr}
 \alias{df.mmr}
 \title{Minimal Cohort Example}
-\format{A data frame with 50 rows and 18 variables:
+\format{
+A data frame with 50 rows and 18 variables:
 \describe{
   \item{IDNUM}{Participant Identification Number}
   \item{COHORT}{Cohort Name (here "Example")}
@@ -25,7 +26,8 @@
   \item{ExtMemComp}{Memory Complaint Relative's Score}
   \item{ExtComp}{Relative's Complaint Score}
   ...
-}}
+}
+}
 \usage{
 df.mmr
 }
